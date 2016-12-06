@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Security Group Builder")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Create mass AWS security group rules easily.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Luke Cahill")]
 [assembly: AssemblyProduct("Security Group Builder")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
