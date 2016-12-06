@@ -82,7 +82,12 @@ namespace Security_Group_Builder {
 		private void writeToFile() {
 			var filename = "security-groups.txt";
 			if(!String.IsNullOrWhiteSpace(textBox1.Text)) {
-				filename = textBox1.Text;
+				if(textBox1.Text.EndsWith(".txt")) {
+					filename = textBox1.Text;
+				} else {
+					filename = $"{textBox1.Text}.txt";
+				}
+				
 			}
 
 			using (var writer = new StreamWriter(filename)) {
@@ -103,13 +108,18 @@ namespace Security_Group_Builder {
 		private void determineSecurityGroup(SecurityGroup group, string[] ports) {
 		
 			if (Regex.IsMatch(group.IpAddress, "[a-zA-Z]")) {
+				//group.IpAddress = @"{ "Ref" : \"" + group.IpAddress + "\" } ";
+				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
+				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
+				sb.Append("\"SourceSecurityGroupId\" : { \"Ref\" : \"" + group.IpAddress + "\" },");
+				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
 				var newSg = new sgJsonWithSg {
 					FromPort = ports[0],
 					ToPort = ports[1],
 					SourceSecurityGroupId = group.IpAddress,
 					GroupId = first
 				};
-				sb.Append(JsonConvert.SerializeObject(newSg));
+				//sb.Append(JsonConvert.SerializeObject(newSg));
 
 			} else {
 				var newSg = new sgJson {
@@ -118,7 +128,11 @@ namespace Security_Group_Builder {
 					CidrIp = group.IpAddress,
 					SourceSecurityGroupName = first
 				};
-				sb.Append(JsonConvert.SerializeObject(newSg));
+				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
+				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
+				sb.Append("\"CidrIp\" : \"" + group.IpAddress + "\",");
+				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
+				//sb.Append(JsonConvert.SerializeObject(newSg));
 			}
 		}
 

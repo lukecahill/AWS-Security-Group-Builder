@@ -23,6 +23,7 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.textbox = new System.Windows.Forms.RichTextBox();
 			this.startBtn = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
@@ -117,6 +118,7 @@
 			this.Controls.Add(this.startBtn);
 			this.Controls.Add(this.textbox);
 			this.Controls.Add(this.menuStrip1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "Form1";
 			this.Text = "AWS Security Group Builder";
