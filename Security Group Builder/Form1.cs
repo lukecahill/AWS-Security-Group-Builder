@@ -61,6 +61,7 @@ namespace Security_Group_Builder {
 				sb.Append("\"" + group.Name + description + i);
 
 				if (group.Direction == "Ingress") {
+					// yes I know it would be easier building using JSON.Net - but I had some problems with this. 
 					sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroupIngress\", \"Properties\" : ");
 				} else if (group.Direction == "Egress") {
 					if(group.IpAddress == "all") {
@@ -114,20 +115,8 @@ namespace Security_Group_Builder {
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
 				sb.Append("\"SourceSecurityGroupId\" : { \"Ref\" : \"" + group.IpAddress + "\" },");
 				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
-				var newSg = new sgJsonWithSg {
-					FromPort = ports[0],
-					ToPort = ports[1],
-					SourceSecurityGroupId = group.IpAddress,
-					GroupId = first
-				};
 
 			} else {
-				var newSg = new sgJson {
-					FromPort = ports[0],
-					ToPort = ports[1],
-					CidrIp = group.IpAddress,
-					SourceSecurityGroupName = first
-				};
 				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
 				sb.Append("\"CidrIp\" : \"" + group.IpAddress + "\",");
