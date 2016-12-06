@@ -4,7 +4,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 using System.Collections;
 
 namespace Security_Group_Builder {
@@ -64,6 +63,9 @@ namespace Security_Group_Builder {
 				if (group.Direction == "Ingress") {
 					sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroupIngress\", \"Properties\" : ");
 				} else if (group.Direction == "Egress") {
+					if(group.IpAddress == "all") {
+						continue;	// skip the rest of this loop. The egress is default is all if left blank so this is not needed.
+					}
 					sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroupEgress\", \"Properties\" : ");
 				}
 
@@ -108,7 +110,6 @@ namespace Security_Group_Builder {
 		private void determineSecurityGroup(SecurityGroup group, string[] ports) {
 		
 			if (Regex.IsMatch(group.IpAddress, "[a-zA-Z]")) {
-				//group.IpAddress = @"{ "Ref" : \"" + group.IpAddress + "\" } ";
 				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
 				sb.Append("\"SourceSecurityGroupId\" : { \"Ref\" : \"" + group.IpAddress + "\" },");
@@ -119,7 +120,6 @@ namespace Security_Group_Builder {
 					SourceSecurityGroupId = group.IpAddress,
 					GroupId = first
 				};
-				//sb.Append(JsonConvert.SerializeObject(newSg));
 
 			} else {
 				var newSg = new sgJson {
@@ -132,7 +132,6 @@ namespace Security_Group_Builder {
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
 				sb.Append("\"CidrIp\" : \"" + group.IpAddress + "\",");
 				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
-				//sb.Append(JsonConvert.SerializeObject(newSg));
 			}
 		}
 
