@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
+using System.Json;
 using System.Text.RegularExpressions;
 using System.Collections;
 
@@ -25,7 +27,7 @@ namespace Security_Group_Builder {
 		public void start() {
 			var tab = '\t';
 			var newLine = '\n';
-			var split = textbox.Text.Split(newLine);
+			var split = textBox2.Text.Trim().Replace("\r", "").Split(newLine);
 
 			foreach (var item in split) {
 				var t = item.Split(tab);
@@ -79,7 +81,32 @@ namespace Security_Group_Builder {
 					sb.Append(",");
 				}
 			}
-			writeToFile();
+
+			if(checkValid()) {
+				sb.ToString().Replace("\\", "");
+				writeToFile();
+			} else {
+				MessageBox.Show("Something went wrong when formatting code.\n\nPlease check the input.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private bool checkValid() {
+			try {
+				var tmpString = new StringBuilder();
+				tmpString.Append("{");
+				tmpString.Append(sb.ToString());
+				tmpString.Append("}");
+				var tmp = JsonValue.Parse(tmpString.ToString());
+				return true;
+
+			} catch(FormatException fex) {
+				Debug.WriteLine(fex.Message);
+				return false;
+
+			} catch(Exception ex) {
+				Debug.WriteLine(ex.Message);
+				return false;
+			}
 		}
 
 		private void writeToFile() {
@@ -137,7 +164,7 @@ namespace Security_Group_Builder {
 		}
 
 		private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
-			MessageBox.Show("The format for this should be NAME DESCRIPTION DIRECTION PROTOCOL PORT IPADDRESS.\n\nThese should be tab separated values.\n\nThe IPADDRESS can be either a CidrIp or a Security group name.\n\nCreated by Luke Cahill", "Help", MessageBoxButtons.OK);
+			MessageBox.Show("The format for this should be NAME DESCRIPTION DIRECTION PROTOCOL PORT IPADDRESS.\n\nThese should be tab separated values.\n\nThe IPADDRESS can be either a CidrIp or a Security group name.\n\nFormatting can be done using the formatting tool of your choice.\n\nCreated by Luke Cahill", "Help", MessageBoxButtons.OK);
 		}
 	}
 }

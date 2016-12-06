@@ -24,7 +24,6 @@
 		/// </summary>
 		private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-			this.textbox = new System.Windows.Forms.RichTextBox();
 			this.startBtn = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -32,16 +31,9 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.label3 = new System.Windows.Forms.Label();
+			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// textbox
-			// 
-			this.textbox.Location = new System.Drawing.Point(12, 74);
-			this.textbox.Name = "textbox";
-			this.textbox.Size = new System.Drawing.Size(415, 163);
-			this.textbox.TabIndex = 0;
-			this.textbox.Text = "";
 			// 
 			// startBtn
 			// 
@@ -106,17 +98,25 @@
 			this.label3.TabIndex = 6;
 			this.label3.Text = "Enter the values to convert into security groups into the below textbox";
 			// 
+			// textBox2
+			// 
+			this.textBox2.Location = new System.Drawing.Point(12, 74);
+			this.textBox2.Multiline = true;
+			this.textBox2.Name = "textBox2";
+			this.textBox2.Size = new System.Drawing.Size(415, 159);
+			this.textBox2.TabIndex = 7;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(439, 321);
+			this.Controls.Add(this.textBox2);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.startBtn);
-			this.Controls.Add(this.textbox);
 			this.Controls.Add(this.menuStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
@@ -130,8 +130,6 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.RichTextBox textbox;
 		private System.Windows.Forms.Button startBtn;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Label label1;
@@ -139,6 +137,7 @@
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.TextBox textBox2;
 	}
 }
 
