@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security Group Builder", "Security Group Builder\Security Group Builder.csproj", "{F1526CF1-632B-4198-8E9E-757FFDB262AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGBUnitTests", "SGBUnitTests\SGBUnitTests.csproj", "{3719CEB2-0171-481E-ACEA-D4503761E03D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F1526CF1-632B-4198-8E9E-757FFDB262AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1526CF1-632B-4198-8E9E-757FFDB262AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1526CF1-632B-4198-8E9E-757FFDB262AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3719CEB2-0171-481E-ACEA-D4503761E03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3719CEB2-0171-481E-ACEA-D4503761E03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3719CEB2-0171-481E-ACEA-D4503761E03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3719CEB2-0171-481E-ACEA-D4503761E03D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
