@@ -13,7 +13,17 @@ namespace Security_Group_Builder {
 		List<SecurityGroup> securityGroupList = new List<SecurityGroup>();
 		StringBuilder sb = new StringBuilder();
 		ArrayList groupNames = new ArrayList();
+		string file;
 		string first = "";
+		string saved = "security-groups.txt";
+
+
+		public Builder(string filename) {
+			file = filename;
+		}
+
+		public Builder() { }
+
 		public void start(TextBox textBox1, TextBox textBox2) {
 			var tab = '\t';
 			var newLine = '\n';
@@ -37,10 +47,10 @@ namespace Security_Group_Builder {
 				});
 			}
 
-			buildString(textBox1);
+			buildString();
 		}
 
-		public void buildString(TextBox textBox1) {
+		public void buildString() {
 			var i = 0;
 			generateSecurityGroup(securityGroupList[0]);
 
@@ -80,7 +90,7 @@ namespace Security_Group_Builder {
 
 			if (checkValid()) {
 				sb.ToString().Replace("\\", "");
-				writeToFile(textBox1);
+				writeToFile(file);
 			} else {
 				MessageBox.Show("Something went wrong when formatting code.\n\nPlease check the input.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -92,6 +102,7 @@ namespace Security_Group_Builder {
 				tmpString.Append("{");
 				tmpString.Append(sb.ToString());
 				tmpString.Append("}");
+				Debug.WriteLine(tmpString.ToString());
 				var tmp = JsonValue.Parse(tmpString.ToString());
 				return true;
 
@@ -105,22 +116,21 @@ namespace Security_Group_Builder {
 			}
 		}
 
-		private void writeToFile(TextBox textBox1) {
-			var filename = "security-groups.txt";
-			if (!String.IsNullOrWhiteSpace(textBox1.Text)) {
-				if (textBox1.Text.EndsWith(".txt")) {
-					filename = textBox1.Text;
+		private void writeToFile(string file) {
+			if (!String.IsNullOrWhiteSpace(file)) {
+				if (file.EndsWith(".txt")) {
+					saved = file;
 				} else {
-					filename = $"{textBox1.Text}.txt";
+					saved = $"{file}.txt";
 				}
 
 			}
 			try {
-				using (var writer = new StreamWriter(filename)) {
+				using (var writer = new StreamWriter(saved)) {
 					writer.Write(sb.ToString());
 					writer.Flush();
 				}
-				MessageBox.Show("Completed", "", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				MessageBox.Show($"Completed. \n\nSaved filename: {saved}", "", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 			} catch (IOException ex) {
 				MessageBox.Show($"Could not write to file. Error message: {ex.Message}", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			} catch (Exception e) {
@@ -134,7 +144,8 @@ namespace Security_Group_Builder {
 			sb.Append("\"" + group.Name);
 			first = group.Name;
 			sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroup\", \"Properties\" : { ");
-			sb.Append("\"VpcId\" : \"\" } },");
+			sb.Append("\"VpcId\" : \"\",");
+			sb.Append("\"GroupDescription\" : \"" + group.Description + "\" } },");
 		}
 
 		private void determineSecurityGroup(SecurityGroup group, string[] ports) {

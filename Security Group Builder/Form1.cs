@@ -7,7 +7,7 @@ namespace Security_Group_Builder {
 
 		public Form1() {
 			InitializeComponent();
-			builder = new Builder();
+			builder = new Builder(textBox1.Text);
 		}
 
 		private void startBtn_Click(object sender, EventArgs e) {
