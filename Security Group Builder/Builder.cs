@@ -144,7 +144,7 @@ namespace Security_Group_Builder {
 			sb.Append("\"" + group.Name);
 			first = group.Name;
 			sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroup\", \"Properties\" : { ");
-			sb.Append("\"VpcId\" : \"\",");
+			sb.Append("\"VpcId\" : { \"Ref\" : \"enterVpcReferenceHere\" },");
 			sb.Append("\"GroupDescription\" : \"" + group.Description + "\" } },");
 		}
 
@@ -153,18 +153,24 @@ namespace Security_Group_Builder {
 			if (Regex.IsMatch(group.IpAddress, "[a-zA-Z]")) {
 				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
+				sb.Append("\"Protocol\" : \"" + group.Protocol + "\",");
 				sb.Append("\"SourceSecurityGroupId\" : { \"Ref\" : \"" + group.IpAddress + "\" },");
 				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
 
 			} else {
 				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
+				sb.Append("\"Protocol\" : \"" + group.Protocol + "\",");
 				sb.Append("\"CidrIp\" : \"" + group.IpAddress + "\",");
 				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
 			}
 		}
 
 		public string[] splitPorts(SecurityGroup group) {
+			if (Regex.IsMatch(group.Port, "all", RegexOptions.IgnoreCase)) {
+				group.Port = "0-65535";
+			}
+
 			string[] ports = new string[2];
 			if (group.Port.IndexOf('-') > -1) {
 				ports = group.Port.Split('-');
