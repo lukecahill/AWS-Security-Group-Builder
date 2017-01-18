@@ -32,6 +32,7 @@
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.label3 = new System.Windows.Forms.Label();
 			this.textBox2 = new System.Windows.Forms.TextBox();
+			this.clearButton = new System.Windows.Forms.Button();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -106,11 +107,22 @@
 			this.textBox2.Size = new System.Drawing.Size(415, 159);
 			this.textBox2.TabIndex = 7;
 			// 
+			// clearButton
+			// 
+			this.clearButton.Location = new System.Drawing.Point(352, 27);
+			this.clearButton.Name = "clearButton";
+			this.clearButton.Size = new System.Drawing.Size(75, 23);
+			this.clearButton.TabIndex = 8;
+			this.clearButton.Text = "Clear Input";
+			this.clearButton.UseVisualStyleBackColor = true;
+			this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(439, 321);
+			this.Controls.Add(this.clearButton);
 			this.Controls.Add(this.textBox2);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
@@ -138,6 +150,7 @@
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TextBox textBox2;
+		private System.Windows.Forms.Button clearButton;
 	}
 }
 
