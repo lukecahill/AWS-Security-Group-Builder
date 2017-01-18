@@ -41,7 +41,7 @@ namespace Security_Group_Builder {
 					Name = t[0],
 					Description = t[1],
 					Direction = t[2],
-					Protocol = t[3],
+					Protocol = t[3].ToLower(),
 					Port = t[4],
 					IpAddress = t[5]
 				});
@@ -52,7 +52,7 @@ namespace Security_Group_Builder {
 
 		public void buildString() {
 			var i = 0;
-			generateSecurityGroup(securityGroupList[0]);
+			first = generateSecurityGroup(securityGroupList[0]);
 
 			foreach (var group in securityGroupList) {
 				i++;
@@ -60,11 +60,9 @@ namespace Security_Group_Builder {
 
 				if (!groupNames.Contains(group.Name)) {
 					groupNames.Add(group.Name);
-				}
-
-				if (groupNames.Contains(group.Name)) {
+				} else if (groupNames.Contains(group.Name)) {
 					group.Name += "" + i;
-				}
+				} // TODO : check this fix
 
 				sb.Append("\"" + group.Name + description + i);
 
@@ -72,7 +70,7 @@ namespace Security_Group_Builder {
 					// yes I know it would be easier building using JSON.Net - but I had some problems with this. 
 					sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroupIngress\", \"Properties\" : ");
 				} else if (group.Direction == "Egress") {
-					if (group.IpAddress == "all") {
+					if ((Regex.IsMatch(group.IpAddress, "all", RegexOptions.IgnoreCase)) || (group.IpAddress == "0.0.0.0/0")) {
 						continue;   // skip the rest of this loop. The egress is default is all if left blank so this is not needed.
 					}
 					sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroupEgress\", \"Properties\" : ");
@@ -138,14 +136,16 @@ namespace Security_Group_Builder {
 			} finally {
 				sb.Clear();
 			}
+
+			sb.Clear();
 		}
 
-		private void generateSecurityGroup(SecurityGroup group) {
+		private string generateSecurityGroup(SecurityGroup group) {
 			sb.Append("\"" + group.Name);
-			first = group.Name;
 			sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroup\", \"Properties\" : { ");
 			sb.Append("\"VpcId\" : { \"Ref\" : \"enterVpcReferenceHere\" },");
 			sb.Append("\"GroupDescription\" : \"" + group.Description + "\" } },");
+			return group.Name;
 		}
 
 		private void determineSecurityGroup(SecurityGroup group, string[] ports) {
