@@ -19,7 +19,7 @@ namespace Security_Group_Builder {
 		}
 
 		private void clearButton_Click(object sender, EventArgs e) {
-			textBox1.Clear();
+			textBox2.Clear();
 		}
 	}
 }
