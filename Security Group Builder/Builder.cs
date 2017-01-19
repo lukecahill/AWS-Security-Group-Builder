@@ -52,7 +52,7 @@ namespace Security_Group_Builder {
 
 		public void buildString() {
 			var i = 0;
-			first = generateSecurityGroup(securityGroupList[0]);
+			generateSecurityGroup(securityGroupList[0]);
 
 			foreach (var group in securityGroupList) {
 				i++;
@@ -60,19 +60,21 @@ namespace Security_Group_Builder {
 
 				if (!groupNames.Contains(group.Name)) {
 					groupNames.Add(group.Name);
-				} else if (groupNames.Contains(group.Name)) {
-					group.Name += "" + i;
-				} // TODO : check this fix
+				}
 
-				sb.Append("\"" + group.Name + description + i);
+				//if (groupNames.Contains(group.Name)) {
+				//	group.Name += "" + i;
+				//}
 
 				if (group.Direction == "Ingress") {
+					sb.Append("\"" + group.Name + description + i);
 					// yes I know it would be easier building using JSON.Net - but I had some problems with this. 
 					sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroupIngress\", \"Properties\" : ");
-				} else if (group.Direction == "Egress") {
-					if ((Regex.IsMatch(group.IpAddress, "all", RegexOptions.IgnoreCase)) || (group.IpAddress == "0.0.0.0/0")) {
+				} else if (Regex.IsMatch(group.Direction, "Egress", RegexOptions.IgnoreCase)) {
+					if (Regex.IsMatch(group.Protocol, "all", RegexOptions.IgnoreCase) || group.IpAddress == "0.0.0.0/0") {
 						continue;   // skip the rest of this loop. The egress is default is all if left blank so this is not needed.
 					}
+					sb.Append("\"" + group.Name + description + i);
 					sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroupEgress\", \"Properties\" : ");
 				}
 
@@ -122,6 +124,15 @@ namespace Security_Group_Builder {
 					saved = $"{file}.txt";
 				}
 
+				try {
+					if (File.Exists(saved)) {
+						File.Delete(saved);
+					}
+				} catch(IOException ex) {
+					MessageBox.Show($"Cannot replace existing file: {saved}");
+				} catch(Exception e) {
+					MessageBox.Show($"An unhandled error occurred when attempting to delete the file {saved}.\n\n{e.Message}");
+				}
 			}
 			try {
 				using (var writer = new StreamWriter(saved)) {
@@ -136,16 +147,14 @@ namespace Security_Group_Builder {
 			} finally {
 				sb.Clear();
 			}
-
-			sb.Clear();
 		}
 
-		private string generateSecurityGroup(SecurityGroup group) {
+		private void generateSecurityGroup(SecurityGroup group) {
 			sb.Append("\"" + group.Name);
+			first = group.Name;
 			sb.Append("\": { \"Type\" : \"AWS::EC2::SecurityGroup\", \"Properties\" : { ");
 			sb.Append("\"VpcId\" : { \"Ref\" : \"enterVpcReferenceHere\" },");
 			sb.Append("\"GroupDescription\" : \"" + group.Description + "\" } },");
-			return group.Name;
 		}
 
 		private void determineSecurityGroup(SecurityGroup group, string[] ports) {
