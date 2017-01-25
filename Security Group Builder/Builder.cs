@@ -162,14 +162,14 @@ namespace Security_Group_Builder {
 			if (Regex.IsMatch(group.IpAddress, "[a-zA-Z]")) {
 				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
-				sb.Append("\"Protocol\" : \"" + group.Protocol + "\",");
+				sb.Append("\"IpProtocol\" : \"" + group.Protocol + "\",");
 				sb.Append("\"SourceSecurityGroupId\" : { \"Ref\" : \"" + group.IpAddress + "\" },");
 				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
 
 			} else {
 				sb.Append("{ \"FromPort\" : \"" + ports[0] + "\",");
 				sb.Append("\"ToPort\" : \"" + ports[1] + "\",");
-				sb.Append("\"Protocol\" : \"" + group.Protocol + "\",");
+				sb.Append("\"IpProtocol\" : \"" + group.Protocol + "\",");
 				sb.Append("\"CidrIp\" : \"" + group.IpAddress + "\",");
 				sb.Append("\"GroupId\" : { \"Ref\" : \"" + first + "\" }}");
 			}
