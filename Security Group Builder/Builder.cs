@@ -50,6 +50,14 @@ namespace Security_Group_Builder {
 			buildString();
 		}
 
+		internal void reset() {
+			first = "";
+			file = "";
+			groupNames.Clear();
+			securityGroupList.Clear();
+			sb.Clear();
+		}
+
 		public void buildString() {
 			var i = 0;
 			generateSecurityGroup(securityGroupList[0]);
